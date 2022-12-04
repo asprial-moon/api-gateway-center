@@ -1,17 +1,11 @@
-package cn.yong.gateway.center.infrastructure.po;
-
-import java.util.Date;
+package cn.yong.gateway.center.domain.register.model.vo;
 
 /**
- * @desc 应用接口方法
- * @author Allen
- * @date 2022/12/2
+ * @author Line
+ * @desc 接口方法 VO
+ * @date 2022/12/4
  */
-public class ApplicationInterfaceMethod {
-    /**
-     * 自增ID
-     */
-    private Integer id;
+public class ApplicationInterfaceMethodVO {
     /**
      * 系统标识
      */
@@ -29,7 +23,7 @@ public class ApplicationInterfaceMethod {
      */
     private String methodName;
     /**
-     * 参数类型(RPC 限定单参数注册)；new String[]{"java.lang.String"}、new String[]{"cn.bugstack.gateway.rpc.dto.XReq"}
+     * 参数类型(RPC 限定单参数类型)；new String[]{"java.lang.String"、new String[]{"cn.yong.gateway.rpc.dto.XReq"}
      */
     private String parameterType;
     /**
@@ -41,25 +35,9 @@ public class ApplicationInterfaceMethod {
      */
     private String httpCommandType;
     /**
-     * 是否鉴权；true = 1是、false = 0否；
+     * 是否鉴权；true = 1是、false = 0否
      */
     private Integer auth;
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getSystemId() {
         return systemId;
@@ -123,21 +101,5 @@ public class ApplicationInterfaceMethod {
 
     public void setAuth(Integer auth) {
         this.auth = auth;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 }
