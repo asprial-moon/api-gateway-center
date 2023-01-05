@@ -1,5 +1,7 @@
 package cn.yong.gateway.center.interfaces;
 
+import cn.yong.gateway.center.application.IConfigManageService;
+import cn.yong.gateway.center.application.IMessageService;
 import cn.yong.gateway.center.application.IRegisterManageService;
 import cn.yong.gateway.center.domain.register.model.vo.ApplicationInterfaceMethodVO;
 import cn.yong.gateway.center.domain.register.model.vo.ApplicationInterfaceVO;
@@ -8,6 +10,7 @@ import cn.yong.gateway.center.infrastructure.common.ResponseCode;
 import cn.yong.gateway.center.infrastructure.common.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +31,10 @@ public class RpcRegisterManage {
     private Logger logger = LoggerFactory.getLogger(RpcRegisterManage.class);
     @Resource
     private IRegisterManageService registerManageService;
+    @Autowired
+    private IConfigManageService configManageService;
+    @Autowired
+    private IMessageService messageService;
 
     @PostMapping(value = "registerApplication", produces = "application/json;charset=utf-8")
     public Result<Boolean> registerApplication(@RequestParam String systemId,
@@ -102,6 +109,20 @@ public class RpcRegisterManage {
             return new Result<>(ResponseCode.INDEX_DUP.getCode(), e.getMessage(), true);
         } catch (Exception e) {
             logger.error("注册应用接口失败 systemId: {}", systemId, e);
+            return new Result<>(ResponseCode.UN_ERROR.getCode(), e.getMessage(), false);
+        }
+    }
+
+    @PostMapping(value = "registerEvent", produces = "application/json;charset=utf-8")
+    public Result<Boolean> registerEvent(@RequestParam String systemId) {
+        try {
+            logger.info("应用信息注册完成通知 systemId：{}", systemId);
+            // 推送注册信息
+            String gatewayId = configManageService.queryGatewayDistribution(systemId);
+            messageService.pushMessage(gatewayId, systemId);
+            return new Result<>(ResponseCode.SUCCESS.getCode(), ResponseCode.UN_ERROR.getInfo(), true);
+        } catch (Exception e) {
+            logger.error("应用信息注册完成通知失败 systemId：{}", systemId, e);
             return new Result<>(ResponseCode.UN_ERROR.getCode(), e.getMessage(), false);
         }
     }

@@ -3,10 +3,11 @@ package cn.yong.gateway.center.infrastructure.repository;
 import cn.yong.gateway.center.domain.manage.model.vo.GatewayServerDetailVO;
 import cn.yong.gateway.center.domain.manage.model.vo.GatewayServerVO;
 import cn.yong.gateway.center.domain.manage.repository.IConfigManageRepository;
-import cn.yong.gateway.center.infrastructure.dao.IGatewayServerDao;
-import cn.yong.gateway.center.infrastructure.dao.IGatewayServerDetailDao;
-import cn.yong.gateway.center.infrastructure.po.GatewayServer;
-import cn.yong.gateway.center.infrastructure.po.GatewayServerDetail;
+import cn.yong.gateway.center.domain.register.model.vo.ApplicationInterfaceMethodVO;
+import cn.yong.gateway.center.domain.register.model.vo.ApplicationInterfaceVO;
+import cn.yong.gateway.center.domain.register.model.vo.ApplicationSystemVO;
+import cn.yong.gateway.center.infrastructure.dao.*;
+import cn.yong.gateway.center.infrastructure.po.*;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -24,6 +25,14 @@ public class ConfigManageRepository implements IConfigManageRepository {
     private IGatewayServerDao gatewayServerDao;
     @Resource
     private IGatewayServerDetailDao gatewayServerDetailDao;
+    @Resource
+    private IGatewayDistributionDao gatewayDistributionDao;
+    @Resource
+    private IApplicationSystemDao applicationSystemDao;
+    @Resource
+    private IApplicationInterfaceDao applicationInterfaceDao;
+    @Resource
+    private IApplicationInterfaceMethodDao applicationInterfaceMethodDao;
 
     @Override
     public List<GatewayServerVO> queryGatewayServerList() {
@@ -74,5 +83,67 @@ public class ConfigManageRepository implements IConfigManageRepository {
         gatewayServerDetail.setGatewayAddress(gatewayAddress);
         gatewayServerDetail.setStatus(status);
         return gatewayServerDetailDao.updateGatewayStatus(gatewayServerDetail);
+    }
+
+    @Override
+    public List<String> queryGatewayDistributionSystemIdList(String gatewayId) {
+        return gatewayDistributionDao.queryGatewayDistributionSystemIdList(gatewayId);
+    }
+
+    @Override
+    public List<ApplicationSystemVO> queryApplicationSystemList(List<String> systemIdList) {
+        List<ApplicationSystem> applicationSystemList = applicationSystemDao.queryApplicationSystemList(systemIdList);
+        List<ApplicationSystemVO> applicationSystemVOList = new ArrayList<>(applicationSystemList.size());
+        for (ApplicationSystem applicationSystem : applicationSystemList) {
+            ApplicationSystemVO applicationSystemVO = new ApplicationSystemVO();
+            applicationSystemVO.setSystemId(applicationSystem.getSystemId());
+            applicationSystemVO.setSystemName(applicationSystem.getSystemName());
+            applicationSystemVO.setSystemType(applicationSystem.getSystemType());
+            applicationSystemVO.setSystemRegister(applicationSystem.getSystemRegistry());
+            applicationSystemVOList.add(applicationSystemVO);
+        }
+        return applicationSystemVOList;
+    }
+
+    @Override
+    public List<ApplicationInterfaceVO> queryApplicationInterfaceList(String systemId) {
+        List<ApplicationInterface> applicationInterfaces = applicationInterfaceDao.queryApplicationInterfaceList(systemId);
+        List<ApplicationInterfaceVO> applicationInterfaceVOList = new ArrayList<>(applicationInterfaces.size());
+        for (ApplicationInterface applicationInterface : applicationInterfaces) {
+            ApplicationInterfaceVO applicationInterfaceVO = new ApplicationInterfaceVO();
+            applicationInterfaceVO.setSystemId(applicationInterface.getSystemId());
+            applicationInterfaceVO.setInterfaceId(applicationInterface.getInterfaceId());
+            applicationInterfaceVO.setInterfaceName(applicationInterface.getInterfaceName());
+            applicationInterfaceVO.setInterfaceVersion(applicationInterface.getInterfaceVersion());
+            applicationInterfaceVOList.add(applicationInterfaceVO);
+        }
+        return applicationInterfaceVOList;
+    }
+
+    @Override
+    public List<ApplicationInterfaceMethodVO> queryApplicationInterfaceMethodList(String systemId, String interfaceId) {
+        ApplicationInterfaceMethod req = new ApplicationInterfaceMethod();
+        req.setSystemId(systemId);
+        req.setInterfaceId(interfaceId);
+        List<ApplicationInterfaceMethod> applicationInterfaceMethods = applicationInterfaceMethodDao.queryApplicationInterfaceMethodList(req);
+        List<ApplicationInterfaceMethodVO> applicationInterfaceMethodVOList = new ArrayList<>(applicationInterfaceMethods.size());
+        for (ApplicationInterfaceMethod applicationInterfaceMethod : applicationInterfaceMethods) {
+            ApplicationInterfaceMethodVO applicationInterfaceMethodVO = new ApplicationInterfaceMethodVO();
+            applicationInterfaceMethodVO.setSystemId(applicationInterfaceMethod.getSystemId());
+            applicationInterfaceMethodVO.setInterfaceId(applicationInterfaceMethod.getInterfaceId());
+            applicationInterfaceMethodVO.setMethodId(applicationInterfaceMethod.getMethodId());
+            applicationInterfaceMethodVO.setMethodName(applicationInterfaceMethod.getMethodName());
+            applicationInterfaceMethodVO.setParameterType(applicationInterfaceMethod.getParameterType());
+            applicationInterfaceMethodVO.setUri(applicationInterfaceMethod.getUri());
+            applicationInterfaceMethodVO.setHttpCommandType(applicationInterfaceMethod.getHttpCommandType());
+            applicationInterfaceMethodVO.setAuth(applicationInterfaceMethod.getAuth());
+            applicationInterfaceMethodVOList.add(applicationInterfaceMethodVO);
+        }
+        return applicationInterfaceMethodVOList;
+    }
+
+    @Override
+    public String queryGatewayDistribution(String systemId) {
+        return gatewayDistributionDao.queryGatewayDistribution(systemId);
     }
 }

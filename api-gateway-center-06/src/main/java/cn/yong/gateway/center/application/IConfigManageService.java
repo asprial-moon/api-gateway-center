@@ -1,5 +1,6 @@
 package cn.yong.gateway.center.application;
 
+import cn.yong.gateway.center.domain.manage.model.aggregates.ApplicationSystemRichInfo;
 import cn.yong.gateway.center.domain.manage.model.vo.GatewayServerVO;
 
 import java.util.List;
@@ -15,4 +16,7 @@ public interface IConfigManageService {
 
     boolean registerGatewayServerNode(String groupId, String gatewayId, String gatewayName, String gatewayAddress);
 
+    ApplicationSystemRichInfo queryApplicationSystemRichInfo(String gatewayId, String systemId);
+
+    String queryGatewayDistribution(String systemId);
 }

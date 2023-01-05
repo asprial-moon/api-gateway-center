@@ -7,6 +7,9 @@ spring:
     username: root
     password: Sunnyday1711
     url: jdbc:mysql://rm-wz943nx257hyn554v2o.mysql.rds.aliyuncs.com/api-gateway??useUnicode=true&characterEncoding=utf8&useSSL=false
+  redis:
+    host: 192.168.9.38
+    port: 6378
 
 mybatis:
   mapper-locations: classpath:/**/*.xml

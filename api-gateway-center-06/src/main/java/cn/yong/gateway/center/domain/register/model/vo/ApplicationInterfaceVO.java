@@ -1,5 +1,7 @@
 package cn.yong.gateway.center.domain.register.model.vo;
 
+import java.util.List;
+
 /**
  * @author Line
  * @desc 应用接口 VO
@@ -22,6 +24,10 @@ public class ApplicationInterfaceVO {
      * 接口版本
      */
     private String interfaceVersion;
+    /**
+     * 方法列表
+     */
+    private List<ApplicationInterfaceMethodVO> methodList;
 
     public String getSystemId() {
         return systemId;
@@ -53,5 +59,13 @@ public class ApplicationInterfaceVO {
 
     public void setInterfaceVersion(String interfaceVersion) {
         this.interfaceVersion = interfaceVersion;
+    }
+
+    public List<ApplicationInterfaceMethodVO> getMethodList() {
+        return methodList;
+    }
+
+    public void setMethodList(List<ApplicationInterfaceMethodVO> methodList) {
+        this.methodList = methodList;
     }
 }

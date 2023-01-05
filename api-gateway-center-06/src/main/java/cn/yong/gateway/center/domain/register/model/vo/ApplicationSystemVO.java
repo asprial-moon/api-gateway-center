@@ -1,5 +1,7 @@
 package cn.yong.gateway.center.domain.register.model.vo;
 
+import java.util.List;
+
 /**
  * @author Line
  * @desc 应用服务 VO
@@ -22,6 +24,10 @@ public class ApplicationSystemVO {
      * 注册中心；zookeeper://127.0.0.1:2181
      */
     private String systemRegister;
+    /**
+     * 接口方法
+     */
+    private List<ApplicationInterfaceVO> interfaceList;
 
     public String getSystemId() {
         return systemId;
@@ -53,5 +59,13 @@ public class ApplicationSystemVO {
 
     public void setSystemRegister(String systemRegister) {
         this.systemRegister = systemRegister;
+    }
+
+    public List<ApplicationInterfaceVO> getInterfaceList() {
+        return interfaceList;
+    }
+
+    public void setInterfaceList(List<ApplicationInterfaceVO> interfaceList) {
+        this.interfaceList = interfaceList;
     }
 }
