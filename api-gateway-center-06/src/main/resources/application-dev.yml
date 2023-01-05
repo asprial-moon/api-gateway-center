@@ -1,0 +1,13 @@
+server:
+  port: 80
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Sunnyday1711
+    url: jdbc:mysql://rm-wz943nx257hyn554v2o.mysql.rds.aliyuncs.com/api-gateway??useUnicode=true&characterEncoding=utf8&useSSL=false
+
+mybatis:
+  mapper-locations: classpath:/**/*.xml
+  config-location:  classpath:/config/mybatis-config.xml
